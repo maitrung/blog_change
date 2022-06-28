@@ -16,12 +16,3 @@ import { Post } from './interfaces/post.interface';
             {   const newPost = new this.postModel({title,description,body,date_posted,author});         
                 return newPost.save();     
             }     
-        async editPost(postID, createPostDTO: CreatePostDTO): Promise<Post> {         
-                const editedPost = await this.postModel.findByIdAndUpdate(postID, createPostDTO, { new: true });
-                return editedPost;
-            }
-        async deletePost(postID): Promise<any> 
-                {         
-                const deletedPost = await this.postModel.findByIdAndRemove(postID);
-                return deletedPost;
-        }}  

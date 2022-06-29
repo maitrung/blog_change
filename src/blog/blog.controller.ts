@@ -15,9 +15,3 @@ async getPost(@Res() res, @Param('postID', new ValidateObjectId()) postID)
 const post = await this.blogService.getPost(postID);
 if (!post) throw new NotFoundException('Post does not exist!');  
 return res.status(HttpStatus.OK).json(post);}
-@Post('/post')     
-async addPost(@Res() res, @Body() createPostDTO: CreatePostDTO)
-{const newPost = await this.postModel(createPostDTO);        
-return res.status(HttpStatus.OK).json(
-     {message: "Post has been submitted successfully!",             
-     post: newPost})} } 

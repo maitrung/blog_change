@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Delete } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post } from './interfaces/post.interface';
@@ -15,7 +15,7 @@ export class BlogService {
     }
 
     async getPost(postID): Promise<Post> {
-        const post = await this.postModel.findById(postID).exec();
+        const post = await this.postModel.find(postID).exec();
         return post;
     }
 
@@ -24,15 +24,16 @@ export class BlogService {
         return newPost.save();
     }
 
-    async editPost(postID, createPostDTO: CreatePostDTO): Promise<Post> {
+    async editPost(id, createPostDTO: CreatePostDTO): Promise<Post> {
         const editedPost = await this.postModel
-            .findByIdAndUpdate(postID, createPostDTO, { new: true });
+            .findOneAndUpdate(id, createPostDTO, { new: true });
         return editedPost;
     }
 
-    async deletePost(postID): Promise<any> {
-        const deletedPost = await this.postModel.findByIdAndRemove(postID.str);
-        return deletedPost;
+    async deletePost(id): Promise<Post> {
+        const deletedPost = await this.postModel.findOneAndDelete(id);
+        
+        return deletedPost.save();
     }
 
 }

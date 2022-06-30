@@ -14,8 +14,8 @@ export class BlogService {
         return posts;
     }
 
-    async getPost(postID): Promise<Post> {
-        const post = await this.postModel.find(postID).exec();
+    async getPost(id): Promise<Post> {
+        const post = await this.postModel.findOne(id);
         return post;
     }
 
@@ -25,9 +25,8 @@ export class BlogService {
     }
 
     async editPost(id, createPostDTO: CreatePostDTO): Promise<Post> {
-        const editedPost = await this.postModel
-            .findOneAndUpdate(id, createPostDTO, { new: true });
-        return editedPost;
+        const editedPost = await this.postModel.findOneAndUpdate(id, createPostDTO, { new: true });
+        return editedPost.save();
     }
 
     async deletePost(id): Promise<Post> {

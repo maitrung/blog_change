@@ -7,21 +7,24 @@ import { CreateUser } from './dto/createuser.dto';
 @Injectable()
 export class AuthService {
     constructor(@InjectModel('User') private readonly userModel:Model<User>){};
-    public async FindOne(username,password):Promise<User>{
-        const findUser = await this.userModel.findOne(username);
-        if(password===findUser.password){
+
+    public async FindOne(username):Promise<any>{
+        const findUser = await this.userModel.findOne({where:{
+            username,
+          },});
+        if(username.password===findUser.password)
             return findUser;
-        }
-        else {
-            console.log("Sai mat khau");
-        }
+        else 
+            return "1";
     }
-    public async Register(userCreate:CreateUser):Promise<User>{
-    if(this.FindOne(userCreate.username,userCreate.password)===null){
+    public async Register(userCreate:CreateUser){
         const addUser = await new this.userModel(userCreate);
-        return addUser.save();
-    }
-    else
-        console.log("Username already exists");  
+        const check = await this.userModel.findOne(userCreate);
+        if(check!=null){
+            return "1"
+        }
+        else
+            return addUser.save();
+       
     }
 }

@@ -18,9 +18,9 @@ export class BlogController {
     }
 
     // Fetch a particular post using ID
-    @Get('/:id')
-    async getPost(@Res() res, @Body() id) {
-        const post = await this.blogService.getPost(id);
+    @Get('post/:postID')
+    async getPost(@Res() res, @Param('postID', new ValidateObjectId()) postID) {
+        const post = await this.blogService.getPost(postID);
         if (!post) throw new NotFoundException('Post does not exist!');
         return res.status(HttpStatus.OK).json(post);
 

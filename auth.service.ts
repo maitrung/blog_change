@@ -29,11 +29,8 @@ export class AuthService {
        
     }
    async validateUserAndPassword(username,pass){
-        const user= await this.userModel.findOne({where:{
-            username,
-            pass,
-        }});
-         const{_id,__v,fullname,id,$locals, $op,$where, db, baseModelName,collection, errors,isNew, modelName,schema, ...result}=user 
+        const user= await this.userModel.findOne(username);
+        const{_id,id,__v,fullname,$locals, $op,$where, db, baseModelName, errors,isNew, modelName,schema,password, ...result}=user; 
         return result;
        
     }

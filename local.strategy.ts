@@ -5,12 +5,10 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy,'local'){
     constructor(private readonly authService:AuthService){
-        super({
-            usernameFied:'username',
-        });
+        super();
     }
-     validate(username:string, password:string){
-        const user= this.authService.validateUserAndPassword(username,password);
+    async validate(username:string, password:string):Promise<any>{
+        const user= await this.authService.validateUserAndPassword(username,password);
         if(!user){
             throw new UnauthorizedException('sign in faided');
         }

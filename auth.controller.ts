@@ -6,10 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { LocalStrategy } from './strategy/local.strategy';
 import { GetUser } from './get-user.decorator';
-class SignInDto{
-    email:string;
-    password:string;
-}
+import { User } from 'dist/auth/interface/user.interface';
+import { userInfo } from 'os';
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -36,16 +34,20 @@ export class AuthController {
     //     console.log('sign data:'+signInDto);
     //     return null;
     // }
-    @Post('/signin')
     @UseGuards(AuthGuard('local'))
+    @Post('/signin')
+    
     signin(@Req() req: Request) {
       const user = req.user;
-      const accessToken = this.jwtService.sign(user);
-      return {accessToken};
+      
+         const accessToken = this.jwtService.sign(user);
+       
+      return {success: true, token: 'JWT ' + accessToken};
     }
+    
     @Get('/test')
-    @UseGuards(AuthGuard('jwt'))
-    testApi(@GetUser()user){
+    @UseGuards(AuthGuard('local'))
+    testApi(@GetUser() user): any{
         return user;
     }
 }

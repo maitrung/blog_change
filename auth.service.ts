@@ -21,10 +21,20 @@ export class AuthService {
         const addUser = await new this.userModel(userCreate);
         const check = await this.userModel.findOne(userCreate);
         if(check!=null){
-            return "1"
+            return "1";
+            
         }
         else
             return addUser.save();
+       
+    }
+   async validateUserAndPassword(username,pass){
+        const user= await this.userModel.findOne({where:{
+            username,
+            pass,
+        }});
+         const{_id,__v,fullname,id,$locals, $op,$where, db, baseModelName,collection, errors,isNew, modelName,schema, ...result}=user 
+        return result;
        
     }
 }
